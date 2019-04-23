@@ -29,8 +29,8 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -43,26 +43,20 @@
             }
         },
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+            submitForm() {
 
-                word = Base64.encode(this.ruleForm.password)
-                this.$axios.post("http://40.73.102.21/user/login.do", {
-                    loginName: this.ruleForm.username,
-                    word:word
-                }).then((res) => {
-                    if(res.status==0){
-                        this.$router.push('/');
+                var word = Base64.encode(this.ruleForm.password)
+
+                var formData = new FormData();
+                formData.append('loginName',this.ruleForm.username)
+                formData.append('word',word)
+                this.$axios.post('/user/login.do', formData
+            ).then((res) => {
+                    if(res.data.status==0){
+                        localStorage.setItem('ms_username',this.ruleForm.username);
+                        this.$router.push('/main');
                     }else {
-                        alert(res.msg)
+                        alert(res.data.msg)
                     }
                 })
             }

@@ -7,6 +7,10 @@ export default new Router({
     routes: [
         {
             path: '/',
+            component: resolve => require(['../components/page/Login.vue'], resolve)
+        },
+        {
+            path: '/main',
             redirect: '/dashboard'
         },
         {

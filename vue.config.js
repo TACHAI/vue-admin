@@ -13,6 +13,10 @@ module.exports = {
             '/ms':{
                 target: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
                 changeOrigin: true
+            },
+            '/':{
+                target:'http://40.73.102.21/',
+                changeOrigin:true
             }
         }
     }

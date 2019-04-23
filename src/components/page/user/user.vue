@@ -17,11 +17,11 @@
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="姓名" sortable width="150">
+                <el-table-column prop="userName" label="姓名" sortable width="150">
                 </el-table-column>
-                <el-table-column prop="name" label="登录名" width="120">
+                <el-table-column prop="loginName" label="登录名" width="120">
                 </el-table-column>
-                <el-table-column prop="name" label="权限" >
+                <el-table-column prop="deptName" label="权限" >
                 </el-table-column>
                 <!--<el-table-column prop="address" label="地址" :formatter="formatter">-->
                 <!--</el-table-column>-->
@@ -86,9 +86,9 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name: '',
-                    date: '',
-                    address: ''
+                    userName: '',
+                    loginName: '',
+                    deptName: ''
                 },
                 idx: -1
             }
@@ -101,19 +101,21 @@
                 return this.tableData.filter((d) => {
                     let is_del = false;
                     for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
+                        if (d.userName === this.del_list[i].userName) {
                             is_del = true;
                             break;
                         }
                     }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
+                    // if (!is_del) {
+                    //     if (d.deptName.indexOf(this.select_cate) > -1 &&
+                    //         (d.loginName.indexOf(this.select_word) > -1 ||
+                    //             d.deptName.indexOf(this.select_word) > -1)
+                    //     ) {
+                    //         return d;
+                    //     }
+                    // }
+                    return d;
+
                 })
             }
         },
@@ -126,13 +128,22 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+
+                // if (process.env.NODE_ENV === 'development') {
+                //     this.url = '/ms/table/list';
+                // };
+                this.$axios.get('/user/selectlist.do', {
+                    params:{
+                        pageNumber: this.cur_page,
+                        pageSize:10
+                    }
+                }).then((res)=>  {
+                    console.info("rows"+res.data.rows)
+                    this.tableData=res.data.rows;
+                    console.info("tableData"+this.tableData[1].address)
+
+                }).catch(function (error) {
+                    console.info(error)
                 })
             },
             search() {
