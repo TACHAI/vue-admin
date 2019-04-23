@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
+            <div class="ms-title">知识库后台管理系统</div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username">
@@ -16,13 +16,15 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <!--<p class="login-tips">Tips : 用户名和密码随便填。</p>-->
             </el-form>
         </div>
     </div>
 </template>
 
 <script>
+    // import md5 from 'js-base64'
+    let Base64 = require('js-base64').Base64;
     export default {
         data: function(){
             return {
@@ -51,6 +53,18 @@
                         return false;
                     }
                 });
+
+                word = Base64.encode(this.ruleForm.password)
+                this.$axios.post("http://40.73.102.21/user/login.do", {
+                    loginName: this.ruleForm.username,
+                    word:word
+                }).then((res) => {
+                    if(res.status==0){
+                        this.$router.push('/');
+                    }else {
+                        alert(res.msg)
+                    }
+                })
             }
         }
     }

@@ -44,6 +44,17 @@
                         title: '系统首页'
                     },
                     {
+                        icon: 'el-icon-lx-home',
+                        index: '1',
+                        title: '用户管理',
+                        subs:[
+                            {
+                                index: 'user',
+                                title: '用户信息管理',
+                            }
+                        ]
+                    },
+                    {
                         icon: 'el-icon-lx-cascades',
                         index: 'table',
                         title: '基础表格'
