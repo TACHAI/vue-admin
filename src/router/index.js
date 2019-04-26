@@ -29,6 +29,16 @@ export default new Router({
                     meta: { title: '用户' }
                 },
                 {
+                    path: '/optionLog',
+                    component: resolve => require(['../components/page/log/optionLog.vue'], resolve),
+                    meta: { title: '历史操作' }
+                },
+                {
+                    path: '/report',
+                    component: resolve => require(['../components/page/dataReport/report.vue'], resolve),
+                    meta: { title: '统计报表' }
+                },
+                {
                     path: '/icon',
                     component: resolve => require(['../components/page/Icon.vue'], resolve),
                     meta: { title: '自定义图标' }

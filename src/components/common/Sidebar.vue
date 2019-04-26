@@ -44,13 +44,99 @@
                         title: '系统首页'
                     },
                     {
-                        icon: 'el-icon-lx-home',
-                        index: '1',
+                        icon: 'el-icon-lx-people',
+                        index: '0',
                         title: '用户管理',
                         subs:[
                             {
                                 index: 'user',
                                 title: '用户信息管理',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-rank',
+                        index: '1',
+                        title: '统计报表',
+                        subs:[
+                            {
+                                index: 'report',
+                                title: '统计报表',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-news',
+                        index: '5',
+                        title: '问题管理',
+                        subs:[
+                            {
+                                index: 'unQuestion',
+                                title: '未处理问题管理',
+                            },
+                            {
+                                index: 'unQuestion',
+                                title: '已处理问题管理',
+                            },
+                            {
+                                index: 'unQuestion',
+                                title: '未处理不满意问题',
+                            },
+                            {
+                                index: 'unQuestion',
+                                title: '已处理不满意问题管理',
+                            },
+                            {
+                                index: 'unQuestion',
+                                title: '消息记录',
+                            },
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-qrcode',
+                        index: '2',
+                        title: '知识库后台管理',
+                        subs:[
+                            {
+                                index: 'report',
+                                title: '知识库管理',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-hot',
+                        index: '4',
+                        title: '热门问答管理',
+                        subs:[
+                            {
+                                index: 'report',
+                                title: '热门问答管理',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-calendar',
+                        index: '6',
+                        title: '历史操作',
+                        subs:[
+                            {
+                                index: 'optionLog',
+                                title: '历史操作',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-file',
+                        index: '7',
+                        title: '微信资源管理',
+                        subs:[
+                            {
+                                index: 'report',
+                                title: '微信图片资源',
+                            },
+                            {
+                                index: 'report',
+                                title: '连接管理',
                             }
                         ]
                     },
