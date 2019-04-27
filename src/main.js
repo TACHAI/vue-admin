@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios';
 import ElementUI from 'element-ui';
+import timeUtil from './assets/js/util.js'
+
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
 import './assets/css/icon.css';
@@ -13,6 +15,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
 });
+Vue.prototype.timeUtil = timeUtil
+
 // 设置baseurl
 Vue.prototype.$axios = axios.create(
     {

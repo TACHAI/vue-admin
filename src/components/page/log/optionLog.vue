@@ -163,8 +163,8 @@
                 // };
                 this.$axios.get('/log/list.do', {
                     params:{
-                        startTime:this.renderTime(this.searchForm.startTime),
-                        endTime:this.renderTime(this.searchForm.endTime),
+                        startTime:this.timeUtil.renderTime(this.searchForm.startTime),
+                        endTime:this.timeUtil.renderTime(this.searchForm.endTime),
                         userId:this.searchForm.userId,
                         content:this.searchForm.content,
                         pageNumber: this.cur_page,

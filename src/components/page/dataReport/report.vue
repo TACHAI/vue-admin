@@ -184,8 +184,8 @@
                 // };
                 this.$axios.get('/report/list.do', {
                     params:{
-                        startTime:this.searchForm.startTime,
-                        endTime:this.searchForm.endTime,
+                        startTime:this.timeUtil.renderTime(this.searchForm.startTime),
+                        endTime:this.timeUtil.renderTime(this.searchForm.endTime),
                         status:this.searchForm.statu,
                         pageNumber: this.cur_page,
                         pageSize:this.pagesize
