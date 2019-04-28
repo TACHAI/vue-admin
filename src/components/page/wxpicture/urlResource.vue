@@ -7,59 +7,75 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <!--<el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">-->
-                <!--<el-option key="1" label="广东省" value="广东省"></el-option>-->
-                <!--<el-option key="2" label="湖南省" value="湖南省"></el-option>-->
-                <!--</el-select>-->
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="newUser">新增</el-button>
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+                <el-row >
+                    <el-col :span="11">
+                        <el-form-item label="开始时间" :span="3" prop="startTime">
+                            <el-date-picker type="date" v-model="searchForm.startTime" placeholder="开始时间" class="handle-input mr10"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="结束时间" :span="3" prop="endTime">
+                            <el-date-picker type="date" v-model="searchForm.endTime" placeholder="结束时间" class="handle-input mr10"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="11">
+                        <el-form-item label="长网址  " :span="3" prop="lUrl">
+                            <el-input v-model="searchForm.lUrl" placeholder="长网址" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="短网址  " :span="3" prop="sUrl">
+                            <el-input v-model="searchForm.sUrl" placeholder="短网址" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="网址说明  " :span="3" prop="urlName">
+                            <el-input v-model="searchForm.urlName" placeholder="网址说明" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="链接类型  " :span="3" prop="sUrl">
+                            <el-input v-model="searchForm.sUrl" placeholder="短网址" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="链接类型  " :span="3" prop="status">
+                            <el-select v-model="searchForm.type"   placeholder="请选择">
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                </el-row>
+                <el-row>
+                    <el-button type="primary" icon="delete" class="handle-new mr10" @click="newUrl">新增</el-button>
+                    <el-button type="primary" icon="delete" class="handle-new mr10" @click="bathDel">批量删除</el-button>
+                </el-row>
             </div>
-
-
-            <!--工具条-->
-            <!--<el-col :span="24" class="el-table_headtoolbar" style="padding-bottom: 0px;">-->
-            <!--<el-form :inline="true" :model="filters" class="userform" label-width="50px">-->
-            <!--<el-form-item label="姓名"  prop="name">-->
-            <!--<el-input v-model="filters.name" placeholder="姓名"  prefix-icon="el-icon-search"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="性别" prop="sex">-->
-            <!--<el-select v-model="filters.sex" filterable placeholder="请选择" prop="sex">-->
-            <!--<el-option v-for="item in sexOptions" :key="item.value"  :label="item.label" :value="item.value">-->
-            <!--</el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--<el-dropdown split-button type="primary" @click="btnSearch" trigger="click">-->
-            <!--检索-->
-            <!--<el-dropdown-menu slot="dropdown" class="lyzbtn-group" trigger="click">-->
-            <!--<el-dropdown-item @click.native="btnReset">重置</el-dropdown-item>-->
-            <!--</el-dropdown-menu>-->
-            <!--</el-dropdown>-->
-            <!--<el-dropdown split-button type="primary" @click="newUser" trigger="click">-->
-            <!--新增-->
-            <!--<el-dropdown-menu slot="dropdown" trigger="click">-->
-            <!--<el-dropdown-item  @click.native="btnEdit">编辑</el-dropdown-item>-->
-            <!--<el-dropdown-item  @click.native="btnDelete">删除</el-dropdown-item>-->
-            <!--</el-dropdown-menu>-->
-            <!--</el-dropdown>-->
-            <!--</el-form>-->
-            <!--</el-col>-->
 
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="userName" label="姓名" sortable width="150">
+                <el-table-column prop="urlName" label="网址说明" sortable width="150"></el-table-column>
+                <el-table-column prop="lUrl" label="长链接" sortable width="150">
                 </el-table-column>
-                <el-table-column prop="loginName" label="登录名" width="120">
+                <el-table-column prop="sUrl" label="短链接" width="120">
                 </el-table-column>
-                <el-table-column prop="deptName" label="权限" >
+                <el-table-column prop="type" label="链接类型" >
                 </el-table-column>
-                <!--<el-table-column prop="address" label="地址" :formatter="formatter">-->
-                <!--</el-table-column>-->
+                <el-table-column prop="insertUser" label="创建人" >
+                </el-table-column>
+                <el-table-column prop="insertDate" label="创建时间" :formatter="formatter">
+                </el-table-column>
                 <el-table-column label="操作"  width="220" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-edit" class="red" @click="resetPassword(scope.$index, scope.row)">重置密码</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -80,19 +96,21 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="45%">
             <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.userName"></el-input>
+                <el-form-item label="资源名">
+                    <el-input v-model="form.urlName"></el-input>
                 </el-form-item>
-                <el-form-item label="登录名">
-                    <el-input v-model="form.loginName"></el-input>
+                <el-form-item label="长链接">
+                    <el-input v-model="form.lUrl" @blur="formatterUrl"></el-input>
                 </el-form-item>
-                <el-form-item label="权限">
-                    <!--<el-input v-model="form.deptName"></el-input>-->
-                    <el-select v-model="form.officeId"  placeholder="请选择">
+                <el-form-item label="短链接">
+                    <el-input v-model="form.sUrl"></el-input>
+                </el-form-item>
+                <el-form-item label="资源类型">
+                    <el-select v-model="form.type"  placeholder="请选择">
                         <el-option
-                                v-for="item in depts"
+                                v-for="item in options"
                                 :key="item.value"
-                                :label="item.text"
+                                :label="item.label"
                                 :value="item.value">
                         </el-option>
                     </el-select>
@@ -107,19 +125,21 @@
         <!--新增用户-->
         <el-dialog title="新增" :visible.sync="newVisible" width="45%">
             <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.userName"></el-input>
+                <el-form-item label="资源名">
+                    <el-input v-model="form.urlName"></el-input>
                 </el-form-item>
-                <el-form-item label="登录名">
-                    <el-input v-model="form.loginName"></el-input>
+                <el-form-item label="长链接">
+                    <el-input v-model="form.lUrl" @blur="formatterUrl"></el-input>
                 </el-form-item>
-                <el-form-item label="权限">
-                    <!--<el-input v-model="form.deptName"></el-input>-->
-                    <el-select v-model="form.officeId"   placeholder="请选择">
+                <el-form-item label="短链接">
+                    <el-input v-model="form.sUrl"></el-input>
+                </el-form-item>
+                <el-form-item label="资源类型">
+                    <el-select v-model="form.type"  placeholder="请选择">
                         <el-option
-                                v-for="item in depts"
+                                v-for="item in options"
                                 :key="item.value"
-                                :label="item.text"
+                                :label="item.label"
                                 :value="item.value">
                         </el-option>
                     </el-select>
@@ -140,20 +160,12 @@
             </span>
         </el-dialog>
 
-        <!-- 重置密码提示框 -->
-        <el-dialog title="提示" :visible.sync="resetVisible" width="300px" center>
-            <div class="del-dialog-cnt">确定要重置密码吗？</div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="resetVisible = false">取 消</el-button>
-                <el-button type="primary" @click="reset">确 定</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'urlResource',
         data() {
             return {
                 url: './vuetable.json',
@@ -173,11 +185,37 @@
                 delVisible: false,
                 resetVisible: false,
                 form: {
-                    userName: '',
-                    loginName: '',
-                    deptName: '',
-                    officeId:''
+                    urlName: '',
+                    lUrl: '',
+                    sUrl: '',
+                    type:''
                 },
+                searchForm:{
+                    startTime:'',
+                    endTime:'',
+                    lUrl:'',
+                    sUrl:'',
+                    urlName:'',
+                    type:'',
+                },
+                options:[
+                    {
+                        value: '',
+                        label: '>--请选择--<',
+                    },
+                    {
+                        value:'材料及模板下载',
+                        label:'材料及模板下载'
+                    },
+                    {
+                        value:'上传材料链接',
+                        label:'上传材料链接'
+                    },
+                    {
+                        value:'非自制链接',
+                        label:'非自制链接'
+                    }
+                ],
                 idx: -1
             }
         },
@@ -221,14 +259,6 @@
                 this.getData();
             },
 
-            getDepts(){
-                this.$axios.get('/office/list.do', {
-                }).then((res)=>  {
-                    this.depts=res.data.data;
-                }).catch(function (error) {
-                    console.info(error)
-                })
-            },
             // 获取 easy-mock 的模拟数据
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
@@ -236,8 +266,14 @@
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
                 // };
-                this.$axios.get('/user/selectlist.do', {
+                this.$axios.get('/urlResource/listByParams.do', {
                     params:{
+                        startTmie: this.timeUtil.renderTime(this.searchForm.startTime),
+                        endTime: this.timeUtil.renderTime(this.searchForm.endTime),
+                        lUrl: this.searchForm.lUrl,
+                        sUrl: this.searchForm.sUrl,
+                        urlName: this.searchForm.urlName,
+                        type: this.searchForm.type,
                         pageNumber: this.cur_page,
                         pageSize:this.pagesize
                     }
@@ -276,7 +312,7 @@
                 this.editVisible = true;
             },
 
-            newUser(){
+            newUrl(){
                 this.newVisible=true;
             },
 
@@ -290,15 +326,48 @@
                 this.id = row.id
                 this.resetVisible = true;
             },
-            delAll() {
+
+            formatterUrl(){
+                var token = '6c5c9a3c970c0df021d76454654eef19'
+                this.$axioBaidu.defaults.headers.common['token'] = token;
+                this.$axioBaidu.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';//配置请求头
+
+                this.$axioBaidu.post('https://dwz.cn/admin/v2/create', {
+                    url:this.form.lUrl
+                    }
+                ).then((res) => {
+                    if(res.data.status==0){
+                        this.$message.success(res.data.msg);
+                    }else {
+                        alert(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    console.info("删除用户错误"+error)
+                })
+
+            },
+            bathDel() {
                 const length = this.multipleSelection.length;
                 let str = '';
                 this.del_list = this.del_list.concat(this.multipleSelection);
                 for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
+                    str += this.multipleSelection[i].id + ',';
                 }
                 this.$message.error('删除了' + str);
                 this.multipleSelection = [];
+                var formData = new FormData();
+                formData.append('ids',str)
+                this.$axios.post('/urlResource/batchIgnoreUrl.do', formData
+                ).then((res) => {
+                    if(res.data.status==0){
+                        this.$message.success(res.data.msg);
+                    }else {
+                        alert(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    console.info("删除用户错误"+error)
+                })
+
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -310,10 +379,12 @@
 
                 var formData = new FormData();
                 formData.append('id',this.id)
-                formData.append('userName',this.form.userName)
-                formData.append('loginName',this.form.loginName)
-                formData.append('officeId',this.form.officeId)
-                this.$axios.post('/user/updateUser.do', formData
+
+                formData.append('lUrl',this.form.lUrl)
+                formData.append('sUrl',this.form.sUrl)
+                formData.append('urlName',this.form.urlName)
+                formData.append('type',this.form.type)
+                this.$axios.post('/urlResource/update.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
                         this.$message.success(res.data.msg);
@@ -321,15 +392,16 @@
                         alert(res.data.msg)
                     }
                 }).catch((error)=>{
-                    console.info("删除用户错误"+error)
+                    console.info("修改错误"+error)
                 })
 
                 this.form = {
-                    userName: '',
-                    loginName: '',
-                    deptName: '',
-                    officeId: ''
+                    lUrl: '',
+                    sUrl: '',
+                    type: '',
+                    urlName: ''
                 }
+                this.id=''
                 this.editVisible = false
                 this.getData();
 
@@ -339,26 +411,27 @@
             saveNew(){
                 var formData = new FormData();
                 // formData.append('id',this.id)
-                formData.append('userName',this.form.userName)
-                formData.append('loginName',this.form.loginName)
-                formData.append('officeId',this.form.officeId)
-                this.$axios.post('/user/addUser.do', formData
+                formData.append('lUrl',this.form.lUrl)
+                formData.append('sUrl',this.form.sUrl)
+                formData.append('urlName',this.form.urlName)
+                formData.append('type',this.form.type)
+                this.$axios.post('/urlResource/addUrl.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
-                        this.$message.success('新建用户成功');
+                        this.$message.success('新建成功');
                     }else {
                         this.$message.error(res.data.msg)
                         // alert(res.data.msg)
                     }
                 }).catch((error)=>{
-                    this.$message.error('新建用户失败\n'+error)
+                    this.$message.error('新建失败\n'+error)
                 })
 
                 this.form = {
-                    userName: '',
-                    loginName: '',
-                    deptName: '',
-                    officeId: ''
+                    lUrl: '',
+                    sUrl: '',
+                    type: '',
+                    urlName: ''
 
                 }
                 this.newVisible = false;
@@ -370,7 +443,7 @@
 
                 var formData = new FormData();
                 formData.append('id',this.id)
-                this.$axios.post('/user/delUser.do', formData
+                this.$axios.post('/urlResource/deleteUrlResource.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
                         this.$message.success('删除成功');
@@ -378,28 +451,12 @@
                         alert(res.data.msg)
                     }
                 }).catch((error)=>{
-                    console.info("删除用户错误"+error)
+                    console.info("删除错误"+error)
                 })
                 this.delVisible = false;
 
             },
 
-            // 确定重置密码
-            reset(){
-                var formData = new FormData();
-                formData.append('id',this.id)
-                this.$axios.post('/user/resetPassword.do', formData
-                ).then((res) => {
-                    if(res.data.status==0){
-                        this.$message.success('重置成功:'+res.data.data);
-                    }else {
-                        alert(res.data.msg)
-                    }
-                }).catch((error)=>{
-                    console.info("重置用户密码失败"+error)
-                })
-                this.resetVisible = false;
-            }
         }
     }
 </script>

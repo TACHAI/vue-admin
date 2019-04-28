@@ -90,7 +90,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'hotQuestionlist',
         data() {
             return {
                 url: './vuetable.json',

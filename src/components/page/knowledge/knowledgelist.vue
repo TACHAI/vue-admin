@@ -139,7 +139,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'knowledgelist',
         data() {
             return {
                 url: './vuetable.json',

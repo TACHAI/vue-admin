@@ -80,7 +80,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'report',
         data() {
             return {
                 url: './vuetable.json',

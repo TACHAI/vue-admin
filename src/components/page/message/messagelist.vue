@@ -73,7 +73,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'messagelist',
         data() {
             return {
                 url: './vuetable.json',

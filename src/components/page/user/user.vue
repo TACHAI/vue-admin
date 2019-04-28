@@ -153,7 +153,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'user',
         data() {
             return {
                 url: './vuetable.json',

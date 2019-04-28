@@ -38,6 +38,16 @@ Vue.prototype.$axio = axios.create(
     }
 )
 
+Vue.prototype.$axioBaidu = axios.create(
+    {
+        // baseURL: 'http://40.73.102.21/',
+        baseURL: 'http://localhost:9080/',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        withCredentials: true, // 默认为false 不带cookie
+
+    }
+)
+
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     const role = localStorage.getItem('ms_username');

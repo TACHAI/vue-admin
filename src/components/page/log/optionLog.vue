@@ -76,7 +76,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'optionLog',
         data() {
             return {
                 url: './vuetable.json',
