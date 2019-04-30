@@ -7,34 +7,38 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-form v-bind:model="searchForm" v-bind:rules="rules"  lable-width="80px">
+                <el-form v-bind:model="searchForm" v-bind:rules="rules" lable-width="80px">
 
-                <el-row >
-                    <el-col :span="9">
-                        <el-form-item label="开始时间" :span="3" prop="startTime">
-                            <el-date-picker type="date" v-model="searchForm.startTime" placeholder="开始时间" class="handle-input mr10"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="9">
-                        <el-form-item label="结束时间" :span="3" prop="endTime">
-                            <el-date-picker type="date" v-model="searchForm.endTime" placeholder="结束时间" class="handle-input mr10"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="9">
-                        <el-form-item label="材料情形  " :span="3" prop="attribute1">
-                            <el-input v-model="searchForm.attribute1" placeholder="材料情形" class="handle-input mr10"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="9">
-                        <el-form-item label="图片id  " :span="3" prop="sUrl">
-                            <el-input v-model="searchForm.imgId" placeholder="图片id" class="handle-input mr10"></el-input>
+                    <el-row>
+                        <el-col :span="9">
+                            <el-form-item label="开始时间" :span="3" prop="startTime">
+                                <el-date-picker type="date" v-model="searchForm.startTime" placeholder="开始时间"
+                                                class="handle-input mr10"></el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="9">
+                            <el-form-item label="结束时间" :span="3" prop="endTime">
+                                <el-date-picker type="date" v-model="searchForm.endTime" placeholder="结束时间"
+                                                class="handle-input mr10"></el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="9">
+                            <el-form-item label="材料情形  " :span="3" prop="attribute1">
+                                <el-input v-model="searchForm.attribute1" placeholder="材料情形"
+                                          class="handle-input mr10"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="9">
+                            <el-form-item label="图片id  " :span="3" prop="sUrl">
+                                <el-input v-model="searchForm.imgId" placeholder="图片id"
+                                          class="handle-input mr10"></el-input>
 
-                        </el-form-item>
-                    </el-col>
-                    <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                </el-row>
+                            </el-form-item>
+                        </el-col>
+                        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                    </el-row>
                 </el-form>
                 <el-row>
                     <el-button type="primary" icon="delete" class="handle-new mr10" @click="newUrl">新增</el-button>
@@ -49,24 +53,30 @@
                 <el-table-column prop="attribute1" label="材料情形" sortable width="150">
                 </el-table-column>
 
-                <el-table-column prop="path" label="图片" width="120" >
-                    <template   slot-scope="scope">
+                <el-table-column prop="path" label="图片" width="120">
+                    <template slot-scope="scope">
                         <!--<img :src="'data:image/png;base64,'+scope.row.base64Picture"  min-width="120" height="120" @click="formatterImg(scope.row,scope.$index)" />-->
-                        <img :src="'data:image/png;base64,'+scope.row.base64Picture"  min-width="120" height="120" @click="formatterImg(scope.row,scope.$index)" />
+                        <img :src="'data:image/png;base64,'+scope.row.base64Picture" min-width="120" height="120"
+                             @click="formatterImg(scope.row,scope.$index)"/>
 
                     </template>
                 </el-table-column>
-                <el-table-column prop="user" label="上传人" >
+                <el-table-column prop="user" label="上传人">
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" >
+                <el-table-column prop="createTime" label="创建时间">
                 </el-table-column>
                 <el-table-column prop="attribute2" label="修改时间" :formatter="formatter">
                 </el-table-column>
-                <el-table-column label="操作"  width="220" align="center">
+                <el-table-column label="操作" width="220" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">修改情形</el-button>
-                        <el-button type="text" icon="el-icon-edit" @click="handleEditPic(scope.$index, scope.row)">修改图片</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">修改情形
+                        </el-button>
+                        <el-button type="text" icon="el-icon-edit" @click="handleEditPic(scope.$index, scope.row)">
+                            修改图片
+                        </el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red"
+                                   @click="handleDelete(scope.$index, scope.row)">删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -76,7 +86,9 @@
             <!--</el-pagination>-->
             <!--</el-col>-->
             <div class="pagination">
-                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="pagesize" layout="total, sizes,prev, pager, next,jumper" :total="total">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :page-sizes="[10, 20, 50, 100]" :page-size="pagesize"
+                               layout="total, sizes,prev, pager, next,jumper" :total="total">
                 </el-pagination>
                 <!--<el-pagination background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="pagesize" layout="prev, pager,size, next,total" :total="total">-->
                 <!--</el-pagination>-->
@@ -151,17 +163,17 @@
                 url: './vuetable.json',
                 tableData: [],
                 cur_page: 1,
-                pagesize:10,//一页显示几条
-                total:0,
+                pagesize: 10,//一页显示几条
+                total: 0,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
                 del_list: [],
-                depts:[],
-                id:'',
-                file:'',
-                showImg:false,
-                imgSrc:'',
+                depts: [],
+                id: '',
+                file: '',
+                showImg: false,
+                imgSrc: '',
                 is_search: false,
                 editVisible: false,
                 newVisible: false,
@@ -171,28 +183,28 @@
                     file: '',
                     attribute1: '',
                 },
-                searchForm:{
-                    startTime:'',
-                    endTime:'',
-                    attribute1:'',
-                    imgId:'',
+                searchForm: {
+                    startTime: '',
+                    endTime: '',
+                    attribute1: '',
+                    imgId: '',
                 },
-                options:[
+                options: [
                     {
                         value: '',
                         label: '>--请选择--<',
                     },
                     {
-                        value:'材料及模板下载',
-                        label:'材料及模板下载'
+                        value: '材料及模板下载',
+                        label: '材料及模板下载'
                     },
                     {
-                        value:'上传材料链接',
-                        label:'上传材料链接'
+                        value: '上传材料链接',
+                        label: '上传材料链接'
                     },
                     {
-                        value:'非自制链接',
-                        label:'非自制链接'
+                        value: '非自制链接',
+                        label: '非自制链接'
                     }
                 ],
                 // 里面的键对应prop的值
@@ -254,7 +266,7 @@
 
         methods: {
             //初始页page、初始每页数据数pagesize和数据data
-            handleSizeChange(size){
+            handleSizeChange(size) {
                 this.pagesize = size;
                 this.getData();
 
@@ -264,7 +276,7 @@
                 this.cur_page = val;
                 this.getData();
             },
-            viewImg () {
+            viewImg() {
                 this.showImg = false
             },
 
@@ -276,18 +288,18 @@
                 //     this.url = '/ms/table/list';
                 // };
                 this.$axios.get('/wxpicture/listByParams.do', {
-                    params:{
+                    params: {
                         startTime: this.renderTime(this.searchForm.startTime),
                         endTime: this.renderTime(this.searchForm.endTime),
                         attribute1: this.searchForm.attribute1,
                         imgId: this.searchForm.imgId,
                         pageNumber: this.cur_page,
-                        pageSize:this.pagesize
+                        pageSize: this.pagesize
                     }
-                }).then((res)=>  {
-                    console.info("rows"+res.data.rows)
-                    this.tableData=res.data.rows;
-                    this.total=res.data.total
+                }).then((res) => {
+                    console.info("rows" + res.data.rows)
+                    this.tableData = res.data.rows;
+                    this.total = res.data.total
 
                 }).catch(function (error) {
                     console.info(error)
@@ -327,15 +339,15 @@
             handleEdit(index, row) {
                 this.idx = index;
                 // const item = this.tableData[index];
-                this.id=row.id;
+                this.id = row.id;
                 this.form = {
                     attribute1: row.attribute1,
                 }
                 this.editVisible = true;
                 // this.getData()
             },
-            handleEditPic(index,row){
-                this.id=row.id;
+            handleEditPic(index, row) {
+                this.id = row.id;
                 this.form = {
                     attribute1: row.attribute1,
                 }
@@ -343,8 +355,8 @@
                 this.getData()
             },
 
-            newUrl(){
-                this.newVisible=true;
+            newUrl() {
+                this.newVisible = true;
             },
 
             handleDelete(index, row) {
@@ -354,10 +366,10 @@
 
             },
 
-            formatterImg(row,column){
+            formatterImg(row, column) {
                 this.showImg = true
                 //  获取当前图片地址
-                this.imgSrc = 'data:image/png;base64,'+row.base64Picture
+                this.imgSrc = 'data:image/png;base64,' + row.base64Picture
             },
 
 
@@ -370,75 +382,75 @@
                 // this.$set(this.tableData, this.idx, this.form);
 
                 var formData = new FormData();
-                formData.append('id',this.id)
-                formData.append('attribute1',this.form.attribute1)
+                formData.append('id', this.id)
+                formData.append('attribute1', this.form.attribute1)
 
                 this.$axios.post('/wxpicture/update.do', formData
                 ).then((res) => {
-                    if(res.data.status==0){
+                    if (res.data.status == 0) {
                         this.$message.success(res.data.msg);
-                    }else {
+                    } else {
                         alert(res.data.msg)
                     }
-                }).catch((error)=>{
-                    console.info("修改错误"+error)
+                }).catch((error) => {
+                    console.info("修改错误" + error)
                 })
 
                 this.form = {
-                    attribute1:''
+                    attribute1: ''
                 }
-                this.id=''
+                this.id = ''
                 this.editVisible = false
                 this.getData();
 
                 // this.$message.success(`修改第 ${this.idx+1} 行成功`);
             },
 
-            saveNew(){
+            saveNew() {
                 var formData = new FormData();
                 // formData.append('id',this.id)
-                formData.append('attribute1',this.form.attribute1)
-                formData.append('file',this.file)
+                formData.append('attribute1', this.form.attribute1)
+                formData.append('file', this.file)
                 this.$axios.post('/wxpicture/pictureUpload.do', formData
                 ).then((res) => {
-                    if(res.data.status==0){
+                    if (res.data.status == 0) {
                         this.$message.success('新建成功');
-                    }else {
+                    } else {
                         this.$message.error(res.data.msg)
                         // alert(res.data.msg)
                     }
-                }).catch((error)=>{
-                    this.$message.error('新建失败\n'+error)
+                }).catch((error) => {
+                    this.$message.error('新建失败\n' + error)
                 })
 
                 this.form = {
                     attribute1: '',
                 }
-                this.file='',
-                this.newVisible = false;
+                this.file = '',
+                    this.newVisible = false;
                 this.getData()
             },
             // 修改图片
-            savePic(){
+            savePic() {
                 var formData = new FormData();
-                formData.append('id',this.id)
-                formData.append('file',this.file)
+                formData.append('id', this.id)
+                formData.append('file', this.file)
                 this.$axios.post('/wxpicture/updatePicture.do', formData
                 ).then((res) => {
-                    if(res.data.status==0){
+                    if (res.data.status == 0) {
                         this.$message.success('修改成功');
-                    }else {
+                    } else {
                         this.$message.error(res.data.msg)
                         // alert(res.data.msg)
                     }
-                }).catch((error)=>{
-                    this.$message.error('修改失败\n'+error)
+                }).catch((error) => {
+                    this.$message.error('修改失败\n' + error)
                 })
 
                 this.form = {
                     attribute1: '',
                 };
-                this.file='';
+                this.file = '';
                 this.editPicVisible = false;
 
                 this.getData()
@@ -446,20 +458,20 @@
             },
 
             // 确定删除
-            deleteRow(){
+            deleteRow() {
                 this.tableData.splice(this.idx, 1);
 
                 var formData = new FormData();
-                formData.append('id',this.id)
+                formData.append('id', this.id)
                 this.$axios.post('/wxpicture/deletePicture.do', formData
                 ).then((res) => {
-                    if(res.data.status==0){
+                    if (res.data.status == 0) {
                         this.$message.success('删除成功');
-                    }else {
+                    } else {
                         alert(res.data.msg)
                     }
-                }).catch((error)=>{
-                    console.info("删除错误"+error)
+                }).catch((error) => {
+                    console.info("删除错误" + error)
                 })
                 this.delVisible = false;
                 this.getData()
@@ -483,7 +495,7 @@
             },
             // 加8小时
             renderTime(date) {
-                if (date.toString().length>1){
+                if (date.toString().length > 1) {
                     var dateee = new Date(date).toJSON();
                     return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
                 }
@@ -505,21 +517,26 @@
         width: 300px;
         display: inline-block;
     }
-    .del-dialog-cnt{
+
+    .del-dialog-cnt {
         font-size: 16px;
         text-align: center
     }
-    .table{
+
+    .table {
         width: 100%;
         font-size: 14px;
     }
-    .red{
+
+    .red {
         color: #ff0000;
     }
-    .handle-new{
+
+    .handle-new {
         float: right;
     }
-    .mr10{
+
+    .mr10 {
         margin-left: 10px;
     }
 </style>

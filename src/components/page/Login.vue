@@ -54,6 +54,7 @@
             ).then((res) => {
                     if(res.data.status==0){
                         localStorage.setItem('ms_username',this.ruleForm.username);
+                        localStorage.setItem('ms_id',res.data.data.id);
                         this.$router.push('/main');
                     }else {
                         alert(res.data.msg)
