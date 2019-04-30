@@ -7,40 +7,20 @@
         </div>
         <div class="container">
             <div class="handle-box">
+                <el-form v-bind:model="searchForm" v-bind:rules="rules"  lable-width="80px">
+
                 <el-row >
-                    <el-col :span="11">
+                    <el-col :span="6">
                         <el-form-item label="开始时间" :span="3" prop="startTime">
                             <el-date-picker type="date" v-model="searchForm.startTime" placeholder="开始时间" class="handle-input mr10"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="6">
                         <el-form-item label="结束时间" :span="3" prop="endTime">
                             <el-date-picker type="date" v-model="searchForm.endTime" placeholder="结束时间" class="handle-input mr10"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="11">
-                        <el-form-item label="长网址  " :span="3" prop="lUrl">
-                            <el-input v-model="searchForm.lUrl" placeholder="长网址" class="handle-input mr10"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="短网址  " :span="3" prop="sUrl">
-                            <el-input v-model="searchForm.sUrl" placeholder="短网址" class="handle-input mr10"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="网址说明  " :span="3" prop="urlName">
-                            <el-input v-model="searchForm.urlName" placeholder="网址说明" class="handle-input mr10"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="链接类型  " :span="3" prop="sUrl">
-                            <el-input v-model="searchForm.sUrl" placeholder="短网址" class="handle-input mr10"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
+                    <el-col :span="6">
                         <el-form-item label="链接类型  " :span="3" prop="status">
                             <el-select v-model="searchForm.type"   placeholder="请选择">
                                 <el-option
@@ -52,8 +32,26 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="6">
+                        <el-form-item label="长网址  " :span="3" prop="lUrl">
+                            <el-input v-model="searchForm.lUrl" placeholder="长网址" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="短网址  " :span="3" prop="sUrl">
+                            <el-input v-model="searchForm.sUrl" placeholder="短网址" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="网址说明  " :span="3" prop="urlName">
+                            <el-input v-model="searchForm.urlName" placeholder="网址说明" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                    </el-col>
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 </el-row>
+                </el-form>
                 <el-row>
                     <el-button type="primary" icon="delete" class="handle-new mr10" @click="newUrl">新增</el-button>
                     <el-button type="primary" icon="delete" class="handle-new mr10" @click="bathDel">批量删除</el-button>
@@ -216,12 +214,25 @@
                         label:'非自制链接'
                     }
                 ],
+                // 里面的键对应prop的值
+                rules: {
+                    // Date: [
+                    //     { type: "date", required: true, message: "请选择消费日期", trigger: "change" }
+                    // ],
+                    // Cost: [
+                    //     { required: true, message: "请填写消费金额", trigger: "blur" },
+                    //     { validator: costValidator, trigger: "change" }
+                    // ],
+                    // Remark: [
+                    //     { required: true, message: "请填写消费明细", trigger: "blur" }
+                    // ]
+                },
                 idx: -1
             }
         },
         created() {
             this.getData();
-            this.getDepts();
+            // this.getDepts();
         },
         computed: {
             data() {
@@ -268,8 +279,8 @@
                 // };
                 this.$axios.get('/urlResource/listByParams.do', {
                     params:{
-                        startTmie: this.timeUtil.renderTime(this.searchForm.startTime),
-                        endTime: this.timeUtil.renderTime(this.searchForm.endTime),
+                        startTmie: this.renderTime(this.searchForm.startTime),
+                        endTime: this.renderTime(this.searchForm.endTime),
                         lUrl: this.searchForm.lUrl,
                         sUrl: this.searchForm.sUrl,
                         urlName: this.searchForm.urlName,
@@ -281,7 +292,6 @@
                     console.info("rows"+res.data.rows)
                     this.tableData=res.data.rows;
                     this.total=res.data.total
-                    console.info("tableData"+this.tableData[1].address)
 
                 }).catch(function (error) {
                     console.info(error)
@@ -293,7 +303,7 @@
             },
 
             formatter(row, column) {
-                return row.address;
+                return this.TimestampToDate(row.insertDate);
             },
 
             filterTag(value, row) {
@@ -457,6 +467,30 @@
 
             },
 
+            // 时间戳转换
+            TimestampToDate(Timestamp) {
+                var date = new Date(Timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var moment = date.getMinutes();
+                var scents = date.getSeconds();
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                hours = hours < 10 ? '0' + hours : hours;
+                moment = moment < 10 ? '0' + moment : moment;
+                scents = scents < 10 ? '0' + scents : scents;
+                return year + '-' + month + '-' + day + ' ' + hours + ':' + moment + ':' + scents;
+            },
+            // 加8小时
+            renderTime(date) {
+                if (date.toString().length>1){
+                    var dateee = new Date(date).toJSON();
+                    return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                }
+                return ''
+            }
         }
     }
 </script>
@@ -484,7 +518,7 @@
     .red{
         color: #ff0000;
     }
-    .handle-del{
+    .handle-new{
         float: right;
     }
     .mr10{

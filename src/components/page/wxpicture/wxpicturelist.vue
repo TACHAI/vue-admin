@@ -7,34 +7,40 @@
         </div>
         <div class="container">
             <div class="handle-box">
+                <el-form v-bind:model="searchForm" v-bind:rules="rules"  lable-width="80px">
+
                 <el-row >
-                    <el-col :span="11">
+                    <el-col :span="9">
                         <el-form-item label="开始时间" :span="3" prop="startTime">
                             <el-date-picker type="date" v-model="searchForm.startTime" placeholder="开始时间" class="handle-input mr10"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="9">
                         <el-form-item label="结束时间" :span="3" prop="endTime">
                             <el-date-picker type="date" v-model="searchForm.endTime" placeholder="结束时间" class="handle-input mr10"></el-date-picker>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="11">
+                    <el-col :span="9">
                         <el-form-item label="材料情形  " :span="3" prop="attribute1">
                             <el-input v-model="searchForm.attribute1" placeholder="材料情形" class="handle-input mr10"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="9">
                         <el-form-item label="图片id  " :span="3" prop="sUrl">
                             <el-input v-model="searchForm.imgId" placeholder="图片id" class="handle-input mr10"></el-input>
+
                         </el-form-item>
                     </el-col>
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 </el-row>
+                </el-form>
                 <el-row>
                     <el-button type="primary" icon="delete" class="handle-new mr10" @click="newUrl">新增</el-button>
                 </el-row>
+                <big-img v-if="showImg" @clickit="viewImg" :img-src="imgSrc"></big-img>
+
             </div>
 
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -42,7 +48,13 @@
                 <el-table-column prop="pictureName" label="图片id" sortable width="150"></el-table-column>
                 <el-table-column prop="attribute1" label="材料情形" sortable width="150">
                 </el-table-column>
-                <el-table-column prop="path" label="图片" width="120">
+
+                <el-table-column prop="path" label="图片" width="120" >
+                    <template   slot-scope="scope">
+                        <!--<img :src="'data:image/png;base64,'+scope.row.base64Picture"  min-width="120" height="120" @click="formatterImg(scope.row,scope.$index)" />-->
+                        <img :src="'data:image/png;base64,'+scope.row.base64Picture"  min-width="120" height="120" @click="formatterImg(scope.row,scope.$index)" />
+
+                    </template>
                 </el-table-column>
                 <el-table-column prop="user" label="上传人" >
                 </el-table-column>
@@ -75,13 +87,7 @@
         <el-dialog title="修改材料情形" :visible.sync="editVisible" width="45%">
             <el-form ref="form" :model="form" label-width="100px">
                 <el-form-item label="资源名">
-                    <el-input v-model="form.urlName"></el-input>
-                </el-form-item>
-                <el-form-item label="长链接">
-                    <el-input v-model="form.lUrl" @blur="formatterUrl"></el-input>
-                </el-form-item>
-                <el-form-item label="短链接">
-                    <el-input v-model="form.sUrl"></el-input>
+                    <el-input v-model="form.attribute1"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -97,7 +103,7 @@
                     <el-input v-model="form.attribute1"></el-input>
                 </el-form-item>
                 <el-form-item label="选择图片">
-                    <el-input v-model="form.file"></el-input>
+                    <input type="file" accept="image/*" @change="uploadPic"></input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -112,12 +118,12 @@
             <el-form ref="form" :model="form" label-width="100px">
 
                 <el-form-item label="选择图片">
-                    <el-input v-model="form.file"></el-input>
+                    <input type="file" accept="image/*" @change="uploadPic"></input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="newVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveNew">确 定</el-button>
+                <el-button type="primary" @click="savePic">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -132,9 +138,12 @@
         </el-dialog>
 
     </div>
+
 </template>
 
 <script>
+    import BigImg from '../../common/BigImg.vue'
+
     export default {
         name: 'urlResource',
         data() {
@@ -150,6 +159,9 @@
                 del_list: [],
                 depts:[],
                 id:'',
+                file:'',
+                showImg:false,
+                imgSrc:'',
                 is_search: false,
                 editVisible: false,
                 newVisible: false,
@@ -183,12 +195,29 @@
                         label:'非自制链接'
                     }
                 ],
+                // 里面的键对应prop的值
+                rules: {
+                    // Date: [
+                    //     { type: "date", required: true, message: "请选择消费日期", trigger: "change" }
+                    // ],
+                    // Cost: [
+                    //     { required: true, message: "请填写消费金额", trigger: "blur" },
+                    //     { validator: costValidator, trigger: "change" }
+                    // ],
+                    // Remark: [
+                    //     { required: true, message: "请填写消费明细", trigger: "blur" }
+                    // ]
+                },
                 idx: -1
             }
         },
+        components: {
+            'big-img': BigImg,
+        },
+
         created() {
             this.getData();
-            this.getDepts();
+            // this.getDepts();
         },
         computed: {
             data() {
@@ -213,6 +242,16 @@
                 })
             }
         },
+        mounted() {
+            // 点击图片变大
+            window.clickImg = (e) => {
+                this.showImg = true
+                //  获取当前图片地址
+                // this.imgSrc = e.getAttribute("src")
+                // this.imgSrc = 'data:image/png;base64,'+row.base64Picture
+            }
+        },
+
         methods: {
             //初始页page、初始每页数据数pagesize和数据data
             handleSizeChange(size){
@@ -225,6 +264,9 @@
                 this.cur_page = val;
                 this.getData();
             },
+            viewImg () {
+                this.showImg = false
+            },
 
             // 获取 easy-mock 的模拟数据
             getData() {
@@ -233,10 +275,10 @@
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
                 // };
-                this.$axios.get('/urlResource/listByParams.do', {
+                this.$axios.get('/wxpicture/listByParams.do', {
                     params:{
-                        startTmie: this.timeUtil.renderTime(this.searchForm.startTime)s,
-                        endTime: this.timeUtil.renderTime(this.searchForm.endTime),
+                        startTime: this.renderTime(this.searchForm.startTime),
+                        endTime: this.renderTime(this.searchForm.endTime),
                         attribute1: this.searchForm.attribute1,
                         imgId: this.searchForm.imgId,
                         pageNumber: this.cur_page,
@@ -246,7 +288,6 @@
                     console.info("rows"+res.data.rows)
                     this.tableData=res.data.rows;
                     this.total=res.data.total
-                    console.info("tableData"+this.tableData[1].address)
 
                 }).catch(function (error) {
                     console.info(error)
@@ -258,11 +299,29 @@
             },
 
             formatter(row, column) {
-                return row.address;
+                return this.TimestampToDate(row.attribute2);
             },
 
             filterTag(value, row) {
                 return row.tag === value;
+            },
+
+            uploadPic(e) {
+                // if(this.input.length==0){
+                //   return false;
+                // }
+
+                var files = e.target.files || e.dataTransfer.files;
+
+                if (!files.length) {
+                    return;
+                }
+
+                if (files.length > 1) {
+                    alert('只能上传一张图片，请重新选择');
+                    return;
+                }
+                this.file = files[0]
             },
 
             handleEdit(index, row) {
@@ -270,14 +329,18 @@
                 // const item = this.tableData[index];
                 this.id=row.id;
                 this.form = {
-                    userName: row.userName,
-                    loginName: row.loginName,
-                    officeId: row.deptName
+                    attribute1: row.attribute1,
                 }
                 this.editVisible = true;
+                // this.getData()
             },
             handleEditPic(index,row){
-
+                this.id=row.id;
+                this.form = {
+                    attribute1: row.attribute1,
+                }
+                this.editPicVisible = true;
+                this.getData()
             },
 
             newUrl(){
@@ -288,55 +351,16 @@
                 this.idx = index;
                 this.id = row.id
                 this.delVisible = true;
-            },
-
-            resetPassword(index,row){
-                this.id = row.id
-                this.resetVisible = true;
-            },
-
-            formatterUrl(){
-                var token = '6c5c9a3c970c0df021d76454654eef19'
-                this.$axioBaidu.defaults.headers.common['token'] = token;
-                this.$axioBaidu.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';//配置请求头
-
-                this.$axioBaidu.post('https://dwz.cn/admin/v2/create', {
-                        url:this.form.lUrl
-                    }
-                ).then((res) => {
-                    if(res.data.status==0){
-                        this.$message.success(res.data.msg);
-                    }else {
-                        alert(res.data.msg)
-                    }
-                }).catch((error)=>{
-                    console.info("删除用户错误"+error)
-                })
 
             },
-            bathDel() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].id + ',';
-                }
-                this.$message.error('删除了' + str);
-                this.multipleSelection = [];
-                var formData = new FormData();
-                formData.append('ids',str)
-                this.$axios.post('/urlResource/batchIgnoreUrl.do', formData
-                ).then((res) => {
-                    if(res.data.status==0){
-                        this.$message.success(res.data.msg);
-                    }else {
-                        alert(res.data.msg)
-                    }
-                }).catch((error)=>{
-                    console.info("删除用户错误"+error)
-                })
 
+            formatterImg(row,column){
+                this.showImg = true
+                //  获取当前图片地址
+                this.imgSrc = 'data:image/png;base64,'+row.base64Picture
             },
+
+
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -347,12 +371,9 @@
 
                 var formData = new FormData();
                 formData.append('id',this.id)
+                formData.append('attribute1',this.form.attribute1)
 
-                formData.append('lUrl',this.form.lUrl)
-                formData.append('sUrl',this.form.sUrl)
-                formData.append('urlName',this.form.urlName)
-                formData.append('type',this.form.type)
-                this.$axios.post('/urlResource/update.do', formData
+                this.$axios.post('/wxpicture/update.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
                         this.$message.success(res.data.msg);
@@ -364,10 +385,7 @@
                 })
 
                 this.form = {
-                    lUrl: '',
-                    sUrl: '',
-                    type: '',
-                    urlName: ''
+                    attribute1:''
                 }
                 this.id=''
                 this.editVisible = false
@@ -379,11 +397,9 @@
             saveNew(){
                 var formData = new FormData();
                 // formData.append('id',this.id)
-                formData.append('lUrl',this.form.lUrl)
-                formData.append('sUrl',this.form.sUrl)
-                formData.append('urlName',this.form.urlName)
-                formData.append('type',this.form.type)
-                this.$axios.post('/urlResource/addUrl.do', formData
+                formData.append('attribute1',this.form.attribute1)
+                formData.append('file',this.file)
+                this.$axios.post('/wxpicture/pictureUpload.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
                         this.$message.success('新建成功');
@@ -396,13 +412,37 @@
                 })
 
                 this.form = {
-                    lUrl: '',
-                    sUrl: '',
-                    type: '',
-                    urlName: ''
-
+                    attribute1: '',
                 }
+                this.file='',
                 this.newVisible = false;
+                this.getData()
+            },
+            // 修改图片
+            savePic(){
+                var formData = new FormData();
+                formData.append('id',this.id)
+                formData.append('file',this.file)
+                this.$axios.post('/wxpicture/updatePicture.do', formData
+                ).then((res) => {
+                    if(res.data.status==0){
+                        this.$message.success('修改成功');
+                    }else {
+                        this.$message.error(res.data.msg)
+                        // alert(res.data.msg)
+                    }
+                }).catch((error)=>{
+                    this.$message.error('修改失败\n'+error)
+                })
+
+                this.form = {
+                    attribute1: '',
+                };
+                this.file='';
+                this.editPicVisible = false;
+
+                this.getData()
+
             },
 
             // 确定删除
@@ -411,7 +451,7 @@
 
                 var formData = new FormData();
                 formData.append('id',this.id)
-                this.$axios.post('/urlResource/deleteUrlResource.do', formData
+                this.$axios.post('/wxpicture/deletePicture.do', formData
                 ).then((res) => {
                     if(res.data.status==0){
                         this.$message.success('删除成功');
@@ -422,9 +462,33 @@
                     console.info("删除错误"+error)
                 })
                 this.delVisible = false;
+                this.getData()
 
             },
-
+            // 时间戳转换
+            TimestampToDate(Timestamp) {
+                var date = new Date(Timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var moment = date.getMinutes();
+                var scents = date.getSeconds();
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                hours = hours < 10 ? '0' + hours : hours;
+                moment = moment < 10 ? '0' + moment : moment;
+                scents = scents < 10 ? '0' + scents : scents;
+                return year + '-' + month + '-' + day + ' ' + hours + ':' + moment + ':' + scents;
+            },
+            // 加8小时
+            renderTime(date) {
+                if (date.toString().length>1){
+                    var dateee = new Date(date).toJSON();
+                    return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                }
+                return ''
+            }
         }
     }
 </script>
@@ -452,7 +516,7 @@
     .red{
         color: #ff0000;
     }
-    .handle-del{
+    .handle-new{
         float: right;
     }
     .mr10{

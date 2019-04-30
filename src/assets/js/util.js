@@ -1,4 +1,3 @@
-import {formatter} from './format'
 
 /**
  * 时间格式化工具

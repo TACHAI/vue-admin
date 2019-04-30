@@ -39,6 +39,36 @@ export default new Router({
                     meta: { title: '统计报表' }
                 },
                 {
+                    path: '/knowledgelist',
+                    component: resolve => require(['../components/page/knowledge/knowledgelist.vue'], resolve),
+                    meta: { title: '知识库管理' }
+                },
+                {
+                    path: '/hotQuestionlist',
+                    component: resolve => require(['../components/page/hotQuestion/hotQuestionlist.vue'], resolve),
+                    meta: { title: '热门问答管理' }
+                },
+                {
+                    path: '/messagelist',
+                    component: resolve => require(['../components/page/message/messagelist.vue'], resolve),
+                    meta: { title: '消息记录' }
+                },
+                {
+                    path: '/hotQuestion',
+                    component: resolve => require(['../components/page/hotQuestion/hotQuestionlist.vue'], resolve),
+                    meta: { title: '热门问答' }
+                },
+                {
+                    path: '/wxpicturelist',
+                    component: resolve => require(['../components/page/wxpicture/wxpicturelist.vue'], resolve),
+                    meta: { title: '微信图片' }
+                },
+                {
+                    path: '/urlResource',
+                    component: resolve => require(['../components/page/wxpicture/urlResource.vue'], resolve),
+                    meta: { title: '连接资源' }
+                },
+                {
                     path: '/icon',
                     component: resolve => require(['../components/page/Icon.vue'], resolve),
                     meta: { title: '自定义图标' }

@@ -163,8 +163,8 @@
                 // };
                 this.$axios.get('/log/list.do', {
                     params:{
-                        startTime:this.timeUtil.renderTime(this.searchForm.startTime),
-                        endTime:this.timeUtil.renderTime(this.searchForm.endTime),
+                        startTime:this.renderTime(this.searchForm.startTime),
+                        endTime:this.renderTime(this.searchForm.endTime),
                         userId:this.searchForm.userId,
                         content:this.searchForm.content,
                         pageNumber: this.cur_page,
@@ -218,7 +218,7 @@
                     var dateee = new Date(date).toJSON();
                     return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
                 }
-                return null
+                return ''
             }
 
         }

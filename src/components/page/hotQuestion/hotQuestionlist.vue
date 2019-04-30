@@ -7,6 +7,8 @@
         </div>
         <div class="container">
             <div class="handle-box">
+                <el-form v-bind:model="searchForm" v-bind:rules="rules"  lable-width="80px">
+
                 <el-row>
                     <el-col :span="6">
                         <el-form-item label="问题" :span="3" prop="question">
@@ -29,6 +31,7 @@
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
 
                 </el-row>
+                </el-form>
                 <el-row>
                     <el-button type="primary" icon="delete" class="handle-new mr10" @click="newHot">新增</el-button>
                 </el-row>
@@ -47,7 +50,7 @@
                 </el-table-column>
                 <el-table-column label="操作"  width="220" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" class="red" @click="distribution('0', scope.row)">下线</el-button>
+                        <el-button type="text" icon="el-icon-edit" class="red" @click="distribution('0', scope.row)">上线</el-button>
                         <el-button type="text" icon="el-icon-edit" class="red" @click="deleteSaleOpp(scope.$index, scope.row)">删除</el-button>
                         <el-button type="text" icon="el-icon-edit" class="red" @click="distribution('1', scope.row)">下线</el-button>
                         <el-button type="text" icon="el-icon-edit" class="red" @click="distribution('3', scope.row)">上移</el-button>
@@ -125,6 +128,19 @@
                         label: '未上线',
                     },
                 ],
+                // 里面的键对应prop的值
+                rules: {
+                    // Date: [
+                    //     { type: "date", required: true, message: "请选择消费日期", trigger: "change" }
+                    // ],
+                    // Cost: [
+                    //     { required: true, message: "请填写消费金额", trigger: "blur" },
+                    //     { validator: costValidator, trigger: "change" }
+                    // ],
+                    // Remark: [
+                    //     { required: true, message: "请填写消费明细", trigger: "blur" }
+                    // ]
+                },
                 idx: -1
             }
         },
@@ -206,7 +222,7 @@
             },
 
             formatterTime(row,column){
-               var time  = this.time(row.createTime)
+               var time  = this.TimestampToDate(row.createTime)
                 return time
             },
 
@@ -310,7 +326,30 @@
                 this.delVisible = false;
                 this.id=''
             },
-
+            // 时间戳转换
+            TimestampToDate(Timestamp) {
+                var date = new Date(Timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var moment = date.getMinutes();
+                var scents = date.getSeconds();
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                hours = hours < 10 ? '0' + hours : hours;
+                moment = moment < 10 ? '0' + moment : moment;
+                scents = scents < 10 ? '0' + scents : scents;
+                return year + '-' + month + '-' + day + ' ' + hours + ':' + moment + ':' + scents;
+            },
+            // 加8小时
+            renderTime(date) {
+                if (date.toString().length>1){
+                    var dateee = new Date(date).toJSON();
+                    return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                }
+                return null
+            }
         }
     }
 </script>

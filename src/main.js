@@ -10,18 +10,21 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
 });
 Vue.prototype.timeUtil = timeUtil
+Vue.use(preview)
 
 // 设置baseurl
 Vue.prototype.$axios = axios.create(
     {
         // baseURL: 'http://40.73.102.21/',
-        baseURL: 'http://localhost:9080/',
+        publicPath: 'http://localhost:9080/',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         withCredentials: true, // 默认为false 不带cookie
 
@@ -31,7 +34,7 @@ Vue.prototype.$axios = axios.create(
 Vue.prototype.$axio = axios.create(
     {
         // baseURL: 'http://40.73.102.21/',
-        baseURL: 'http://localhost:9080/',
+        publicPath: 'http://localhost:9080/',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         withCredentials: false, // 默认为false 不带cookie
 

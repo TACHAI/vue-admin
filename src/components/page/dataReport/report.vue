@@ -91,15 +91,15 @@
                 multipleSelection: [],
                 is_search: false,
                 searchForm:{
-                    statu:'',
+                    statu:'0',
                     startTime:'',
                     endTime:'',
                 },
                 options:[
-                    {
-                        value: '',
-                        label: '--请选择',
-                    },
+                    // {
+                    //     value: '',
+                    //     label: '--请选择',
+                    // },
                     {
                         value:'0',
                         label:'日'
@@ -182,10 +182,12 @@
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
                 // };
+                var startTime =this.renderTime(this.searchForm.startTime)
+                var endTime = this.renderTime(this.searchForm.endTime)
                 this.$axios.get('/report/list.do', {
                     params:{
-                        startTime:this.timeUtil.renderTime(this.searchForm.startTime),
-                        endTime:this.timeUtil.renderTime(this.searchForm.endTime),
+                        startTime:startTime,
+                        endTime:endTime,
                         status:this.searchForm.statu,
                         pageNumber: this.cur_page,
                         pageSize:this.pagesize
@@ -262,7 +264,7 @@
                     var dateee = new Date(date).toJSON();
                     return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
                 }
-                return null
+                return ''
             }
 
         }

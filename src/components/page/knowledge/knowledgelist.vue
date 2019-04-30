@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>统计报表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>知识库管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -69,6 +69,7 @@
                         <el-button type="primary" icon="search" @click="search">搜索</el-button>
 
                     </el-row>
+
                 </el-form>
             </div>
 
@@ -109,31 +110,31 @@
             </div>
         </div>
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="45%">
-            <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="登录名">
-                    <el-input v-model="form.loginName"></el-input>
-                </el-form-item>
-                <el-form-item label="权限">
-                    <!--<el-input v-model="form.deptName"></el-input>-->
-                    <el-select v-model="form.officeId"  placeholder="请选择">
-                        <el-option
-                                v-for="item in depts"
-                                :key="item.value"
-                                :label="item.text"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
+        <!--<el-dialog title="编辑" :visible.sync="editVisible" width="45%">-->
+            <!--<el-form ref="form" :model="form" label-width="100px">-->
+                <!--<el-form-item label="姓名">-->
+                    <!--<el-input v-model="form.userName"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="登录名">-->
+                    <!--<el-input v-model="form.loginName"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="权限">-->
+                    <!--&lt;!&ndash;<el-input v-model="form.deptName"></el-input>&ndash;&gt;-->
+                    <!--<el-select v-model="form.officeId"  placeholder="请选择">-->
+                        <!--<el-option-->
+                                <!--v-for="item in depts"-->
+                                <!--:key="item.value"-->
+                                <!--:label="item.text"-->
+                                <!--:value="item.value">-->
+                        <!--</el-option>-->
+                    <!--</el-select>-->
+                <!--</el-form-item>-->
+            <!--</el-form>-->
+            <!--<span slot="footer" class="dialog-footer">-->
+                <!--<el-button @click="editVisible = false">取 消</el-button>-->
+                <!--<el-button type="primary" @click="saveEdit">确 定</el-button>-->
+            <!--</span>-->
+        <!--</el-dialog>-->
     </div>
 </template>
 
@@ -179,6 +180,11 @@
                     }
 
                 ],
+                form:{
+                    userName:'',
+                    loginName:'',
+                    officeId:'',
+                },
                 // 里面的键对应prop的值
                 rules: {
                     // Date: [
@@ -370,7 +376,15 @@
                 $("#myModal").modal('show');
             },
 
-            detailHandle(row,column) {
+            dateformatter2(row,column) {
+                var defaultTime = new Date(row.insertDate);
+                var defaultDate = defaultTime.getTime()+24*3600*1000;
+                var endTime = TimestampToDate1(defaultDate)
+                var handle='<a href="../knowledgeUp/messagelist.html?startTime='+row.insertDate+'&endTime='+endTime+'">'+row.handleNum+'</a>'
+
+                return handle;
+            },
+            dateformatter1(row,column) {
                 var defaultTime = new Date(row.insertDate);
                 var defaultDate = defaultTime.getTime()+24*3600*1000;
                 var endTime = TimestampToDate1(defaultDate)

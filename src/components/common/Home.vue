@@ -30,6 +30,19 @@
         components:{
             vHead, vSidebar, vTags
         },
+        mounted() {
+            // 点击图片变大
+            window.clickImg = (e) => {
+                this.showImg = true
+                //  获取当前图片地址
+                // this.imgSrc = e.getAttribute("src")
+                // this.imgSrc = 'data:image/png;base64,'+row.base64Picture
+            }
+            window.viewImg =() =>{
+                this.showImg = false
+            }
+        },
+
         created(){
             bus.$on('collapse', msg => {
                 this.collapse = msg;
